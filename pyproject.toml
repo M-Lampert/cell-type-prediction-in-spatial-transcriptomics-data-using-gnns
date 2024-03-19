@@ -1,0 +1,127 @@
+[project]
+name = "ctgnn"
+version = "0.0.1"
+description = "Repository for the ICLR 2024 workshop MLGenX paper."
+readme = "README.md"
+requires-python = "==3.10.13"
+keywords = [
+    "GNN",
+    "Deep Learning",
+    "Neural Networks",
+    "Spatial Transcriptomics",
+]
+authors = [
+    { name="Moritz Lampert", email = "moritz.lampert@uni-wuerzburg.de" },
+]
+
+dependencies = [
+    "pyyaml==6.0",
+    "omegaconf==2.3.0",
+    "jupyter==1.0.0",
+    "tqdm==4.65.0",
+    "matplotlib==3.8.2",
+    "seaborn==0.13.1",
+    "numpy==1.26.0",
+    "pandas==2.2.0",
+    "pyarrow==15.0.0",
+    "networkx==3.1",
+    "igraph==0.11.3",
+    "scikit-learn==1.4.0",
+    "pytorch-ignite==0.4.13",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest==7.4.4",      # Testing framework
+    "pytest-cov==4.1.0",  # Code coverage plugin for pytest
+    "pytest-mock==3.12.0", # Mocking plugin for pytest
+]
+
+dev = [
+    "flake8==7.0.0",
+    "flake8-pyproject==1.2.3",
+    "flake8-bugbear==24.1.17",
+    "pylint==3.0.3",
+    "black==23.12.1",
+    "mypy==1.8.0",
+]
+
+[project.urls]
+repository = "https://github.com/M-Lampert/cell-type-prediction-in-spatial-transcriptomics-data-using-gnns"
+
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.module]
+name = "ctgnn"
+
+#######################################################################################
+################ Framework specific configs ###########################################
+#######################################################################################
+
+[tool.isort]
+profile = "black"
+skip = ["__init__.py"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = "E203"                # whitespace before ':' conflicts with black
+per-file-ignores = "__init__.py:F401" # Ignore unused imports in __init__.py files
+
+[tool.pylint]
+max-line-length = 88
+disable = ["R0902", "R0903", "R0912", "R0913", "R0914"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+addopts = "--cov=ctgnn"
+filterwarnings = [
+    "ignore:Setting backward hooks on ReLU activations.:UserWarning",
+]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+# https://coverage.readthedocs.io/en/7.1.0/excluding.html
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+]
+omit = [
+    "**/__init__.py"
+    ]
+fail_under = 95
+show_missing = true
+skip_covered = true
+
+[tool.autoflake]
+in-place = true
+recursive = true
+remove-all-unused-imports = true
+expand-star-imports = true
+ignore-init-module-imports = true
+remove-duplicate-keys = true
+remove-unused-variables = true
+
+[tool.mypy] # Static type checker
+disallow_untyped_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+show_error_codes = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]] # Disable mypy for the dir `test/`
+module = "test.*"
+ignore_errors = true
+
+[tool.pyright]
+reportGeneralTypeIssues = false
