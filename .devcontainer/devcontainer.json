@@ -1,0 +1,39 @@
+{
+    "build": { "dockerfile": "Dockerfile", "context": ".." },
+    "name": "Cell-Type GNN",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "ms-python.vscode-pylance",
+          "ms-python.black-formatter",
+          "ms-python.isort",
+          "ms-python.pylint",
+          "ms-python.flake8",
+          "ms-python.mypy-type-checker",
+          "ms-toolsai.jupyter"
+        ],
+        "python.defaultInterpreterPath": "/opt/conda/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.analysis.typeCheckingMode": "basic"
+      },
+      // Add IDs of extensions you want to be installed when container is created.
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.pylint",
+        "ms-python.flake8",
+        "ms-python.mypy-type-checker",
+        "ms-toolsai.jupyter"
+      ]
+    },
+  "runArgs": [ 
+    "-it", 
+    "--gpus",
+    "all"
+  ],
+"postCreateCommand": "pip install -e '.[dev,test]' && git config --global --add safe.directory /workspaces/cell-type-prediction-in-spatial-transcriptomics-data-using-gnns"
+}
