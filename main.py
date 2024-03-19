@@ -2,26 +2,25 @@
 # mypy: ignore-errors
 # flake8: noqa
 # pyright: reportPrivateImportUsage=false
-import time
 import logging
+import time
 from pathlib import Path
 
-from omegaconf import DictConfig
-from tqdm import tqdm
-
 import torch
-from torch import nn, optim
+from ignite.contrib.handlers import ProgressBar
 from ignite.engine import Events
+from ignite.handlers import Checkpoint
 from ignite.metrics import Accuracy, Loss
 from ignite.utils import manual_seed
-from ignite.contrib.handlers import ProgressBar
-from ignite.handlers import Checkpoint
+from omegaconf import DictConfig
+from torch import nn, optim
+from tqdm import tqdm
 
 from ctgnn.training.data import setup_data
+from ctgnn.training.metrics import F1
 from ctgnn.training.models import setup_model
 from ctgnn.training.trainers import setup_evaluator, setup_trainer
 from ctgnn.training.utils import *
-from ctgnn.training.metrics import F1
 
 
 def run(config: DictConfig):
@@ -34,14 +33,18 @@ def run(config: DictConfig):
     save_config(config, output_dir)
     config.output_dir = output_dir
 
-    dataloader_train, dataloader_eval, dataloader_test, dataset_sizes = setup_data(config)
+    dataloader_train, dataloader_eval, dataloader_test, dataset_sizes = setup_data(
+        config
+    )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = setup_model(config, dataset_sizes).to(device=device)
     optimizer = optim.Adam(model.parameters(), lr=config.lr)
     loss_fn = nn.CrossEntropyLoss().to(device=device)
 
-    trainer = setup_trainer(model=model, optimizer=optimizer, loss_fn=loss_fn, device=device)
+    trainer = setup_trainer(
+        model=model, optimizer=optimizer, loss_fn=loss_fn, device=device
+    )
     evaluator = setup_evaluator(model=model, device=device)
 
     accuracy = Accuracy(device=device)
@@ -65,7 +68,19 @@ def run(config: DictConfig):
         evaluator.run(dataloader_eval)
         trainer.state.metrics.update(evaluator.state.metrics)
 
-    ProgressBar(position=1).attach(trainer, event_name=Events.EPOCH_COMPLETED, closing_event_name=Events.COMPLETED, metric_names=["train_accuracy", "train_loss", "train_f1", "eval_accuracy", "eval_loss", "eval_f1"])
+    ProgressBar(position=1).attach(
+        trainer,
+        event_name=Events.EPOCH_COMPLETED,
+        closing_event_name=Events.COMPLETED,
+        metric_names=[
+            "train_accuracy",
+            "train_loss",
+            "train_f1",
+            "eval_accuracy",
+            "eval_loss",
+            "eval_f1",
+        ],
+    )
 
     trainer.run(
         dataloader_train,
@@ -83,9 +98,16 @@ def run(config: DictConfig):
             metric.attach(tester, name)
         res_dict = dict(config)
         res_dict["runtime"] = time.time() - start_time
-        res_dict["output_dir"] = str(output_dir) # convert to string for saving to parquet
-        res_dict["splits"] = [list(config.splits)] # convert to nested list for converting to dataframe
-        for split, loader in zip(["train", "eval", "test"], [dataloader_train, dataloader_eval, dataloader_test]):
+        res_dict["output_dir"] = str(
+            output_dir
+        )  # convert to string for saving to parquet
+        res_dict["splits"] = [
+            list(config.splits)
+        ]  # convert to nested list for converting to dataframe
+        for split, loader in zip(
+            ["train", "eval", "test"],
+            [dataloader_train, dataloader_eval, dataloader_test],
+        ):
             tester.run(loader)
             res_dict[split + "_accuracy"] = tester.state.metrics["accuracy"]
             res_dict[split + "_f1"] = tester.state.metrics["f1"]
@@ -93,13 +115,21 @@ def run(config: DictConfig):
     else:
         res_dict = dict(config)
         res_dict["runtime"] = time.time() - start_time
-        res_dict["output_dir"] = str(output_dir) # convert to string for saving to parquet
-        res_dict["splits"] = [list(config.splits)] # convert to nested list for converting to dataframe
-        for split, loader in zip(["train", "eval", "test"], [dataloader_train, dataloader_eval, dataloader_test]):
+        res_dict["output_dir"] = str(
+            output_dir
+        )  # convert to string for saving to parquet
+        res_dict["splits"] = [
+            list(config.splits)
+        ]  # convert to nested list for converting to dataframe
+        for split, loader in zip(
+            ["train", "eval", "test"],
+            [dataloader_train, dataloader_eval, dataloader_test],
+        ):
             res_dict[split + "_accuracy"] = torch.nan
             res_dict[split + "_f1"] = torch.nan
             res_dict[split + "_loss"] = torch.nan
     save_results(experiment_name=config.experiment_name, res_dict=res_dict)
+
 
 # main entrypoint
 def main():
@@ -111,7 +141,9 @@ def main():
     pbar = tqdm(filtered_configs, position=0)
     for i, config in enumerate(pbar):
         pbar.set_description(f"Run: [{i+1}/{len(filtered_configs)}]")
-        pbar.set_postfix_str(f"Dataset: {config.dataset}, Model: {config.model_name}, Layers: {config.num_layers}, features: {config.features}")
+        pbar.set_postfix_str(
+            f"Dataset: {config.dataset}, Model: {config.model_name}, Layers: {config.num_layers}, features: {config.features}"
+        )
         run(config=config)
 
         torch.cuda.empty_cache()

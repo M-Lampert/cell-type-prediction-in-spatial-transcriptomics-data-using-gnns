@@ -7,8 +7,8 @@ from torch_geometric.loader import NeighborLoader
 from torch_geometric.transforms import RandomNodeSplit
 
 from ctgnn.data import (
-    construct_graph,
     ShuffleEdges,
+    construct_graph,
     get_constructed_graph,
     get_spatial_data,
 )

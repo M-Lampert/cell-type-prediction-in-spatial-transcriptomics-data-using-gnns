@@ -4,7 +4,6 @@ Tests the GCN model
 # pylint: disable=missing-function-docstring, duplicate-code
 
 import pytest
-from torch import Tensor
 
 from ctgnn.nn.gcn import GCN, GCNConv_
 

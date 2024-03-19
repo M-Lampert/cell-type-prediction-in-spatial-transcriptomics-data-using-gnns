@@ -36,7 +36,6 @@ def get_constructed_graph(
         same_params["self_loops"] = True
 
     if constr_method == "knn":
-        # TODO: CHANGE TO ONLY SUBTRACT 1 REGARDLESS OF SELF-LOOPS SINCE THE IMPLEMENTATION CHANGED
         # In total -2: -1 for self-loops and -1 for the conversion from directed
         # to undirected since this adds some additional edges
         k = (

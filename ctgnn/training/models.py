@@ -15,9 +15,7 @@ models_dict: dict[str, type[nn.Module]] = {
 }
 
 
-def setup_model(
-    config: DictConfig, dataset_sizes: tuple[int, int]
-) -> nn.Module:
+def setup_model(config: DictConfig, dataset_sizes: tuple[int, int]) -> nn.Module:
     """Set up the GNN model that should be used.
 
     Args:
