@@ -1,0 +1,26 @@
+# Configuration file for training
+
+## General
+experiment_name: main_2024_01_17 # experiment name
+runs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] # list of runs as an easy way to average over multiple runs
+
+## Data
+dataset: [intestine, embryo, hypothalamus, brain] # dataset name
+construction_method: [knn, radius, delaunay, radius_delaunay] # knn, radius, delaunay or radius_delaunay
+features: [random, raw] # specify features to use. Can be `random` for random features sampled from a Normal distribution or `raw` for the original features
+self_loops: True # Whether to add self loops to the graph
+num_workers: 0
+
+## Training
+batch_size: 512 # train batch size
+max_epochs: 5000 # number of maximum epochs
+patience: 5 # number of epochs to wait before with no performance increase early stopping
+lr: [0.01, 0.001] # learning rate
+
+## Model
+model_name: [MLP, GCN, GAT, SAGE, GIN] # model name. Can be `GAT`, `GCN`, `SAGE` or `MLP`
+heads: [1, 8] # number of heads for GAT
+num_layers: [1, 2, 3] # number of layers
+hidden_dim: [64, 128] # hidden dimension
+activation: relu # activation function
+dropout: [0.0, 0.2] # dropout rate
