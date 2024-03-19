@@ -2,9 +2,6 @@ __pycache__/
 .coverage
 .pytest_cache/
 .mypy_cache/
-data/logs/**/checkpoints/training_*.pt
-mlruns/
-output/
 data/checkpoints/
 
 # For testing things out:
