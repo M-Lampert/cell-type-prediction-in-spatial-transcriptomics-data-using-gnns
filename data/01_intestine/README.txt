@@ -8,12 +8,12 @@ The directory contains the following files:
 	cluster_assignment.parquet: Cluster assignment with cluster id and cell type
 	cell_coords.parquet: The cell coordinates as x and y coordinates.
 
-README by the original authors:
 The files above originate from the files of the original dataset described below as follows:
 	cell_by_gene.parquet -> data_analysis/baysor_membrane_prior/segmentation_counts.csv
 	cluster_assignment.parquet -> data_analysis/baysor_membrane_prior/cell_assignment.csv
 	cell_coords.parquet -> data_analysis/baysor_membrane_prior/segmentation_cell_stats.csv
 -----------------------------------------------------------------
+README by the original authors:
 
 File Organization for MERFISH Mouse Ileum Dataset (Baysor 2021)
 

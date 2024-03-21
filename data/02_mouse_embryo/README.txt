@@ -10,12 +10,13 @@ The directory contains the following files:
 	cluster_assignment.parquet: Cluster assignment with cluster id and cell type
 	cell_coords.parquet: The cell coordinates as x and y coordinates.
 
-README by the original authors:
 The files above originate from the files of the original dataset described below as follows:
 	cell_by_gene.parquet -> counts.Rds
 	cluster_assignment.parquet -> MGA_joint_UMAP.Rds
 	cell_coords.parquet -> metadata.Rds
 ------------------------------------------------------------------------------------------------------------------
+README by the original authors:
+
 This data contains the molecule, processed segmentation, processed expression, and 
 imputed gene expression data from the seqFISH profiling of mouse embryos during 
 organogenesis.

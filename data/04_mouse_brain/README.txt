@@ -10,12 +10,13 @@ The directory contains the following files:
 	cluster_assignment.parquet: Cluster assignment with cluster id and cell type
 	cell_coords.parquet: The cell coordinates as x and y coordinates.
 
-README by the original authors:
 The files above originate from the files of the original dataset described below as follows:
 	cell_by_gene.parquet -> counts.h5ad
 	cluster_assignment.parquet -> cell_labels.csv
 	cell_coords.parquet -> ??
 -------------------------------------------------------------------------------
+README by the original authors:
+
 This data collection contains spatially resolved single-cell transcriptomics datasets acquired using MERFISH on the mouse primary motor cortex (MOp) collected by the Xiaowei Zhuang Lab at Harvard University and Howard Hughes Medical Institute.
 
 * The dataset contains MERFISH images of 12 experiments, which include 64 coronal slices of the MOp region (10 um thick slices, every 100um interval) collected from 2 biological replicates. For each mouse, 6 experiments were performed, and each experiment was named with the mouse id plus the sample id, e.g. mouse1_sample1, mouse2_sample3. For each experiment, multiple coronal slices (4-6 slices) were included on the same coverslip and were imaged together.
