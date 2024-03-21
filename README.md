@@ -1,6 +1,6 @@
 # Cell-Type Prediction in Spatial Transcriptomics Data using Graph Neural Networks
 
-This is the official repository reproducing the experiments from the ICLR 2024 Workshop MLGenX Poster "Cell-Type Prediction in Spatial Transcriptomics Data using Graph Neural Networks".
+This is the official repository reproducing the experiments from the ICLR 2024 Workshop MLGenX Poster "[Cell-Type Prediction in Spatial Transcriptomics Data using Graph Neural Networks](https://openreview.net/forum?id=vlnaFzmYkI)".
 
 The following gives an introduction in how to use the repository to reproduce the experiments. First, the structure of the repository is explained. Then, we describe how you can setup the python environment using DevContainers or Conda. Finally, we explain how to run the experiments and the unit tests.
 
